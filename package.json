@@ -1,0 +1,66 @@
+{
+  "name": "scientific-calculator",
+  "productName": "Scientific Calculator",
+  "version": "1.0.0",
+  "description": "A natural textbook display scientific calculator with 8 modes, built as an offline desktop app.",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable",
+    "dist:installer": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
+    "katex": "^0.16.11",
+    "mathjs": "^13.2.0"
+  },
+  "build": {
+    "appId": "com.scientificcalculator.desktop",
+    "productName": "Scientific Calculator",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "styles.css",
+      "app.js",
+      "basen.js",
+      "engine.js",
+      "vendor/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Scientific Calculator",
+      "artifactName": "Scientific-Calculator-${version}-setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "Scientific-Calculator-${version}-portable.${ext}"
+    }
+  }
+}

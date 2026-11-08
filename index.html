@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f1ec">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>Scientific Calculator</title>
+  <link rel="stylesheet" href="./vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">Σ</span>
+        <div>
+          <h1>Scientific Calculator</h1>
+          <p>Natural textbook display · 8 modes</p>
+        </div>
+      </div>
+      <div class="seg" id="angle" role="radiogroup" aria-label="Angle unit">
+        <button type="button" role="radio" aria-checked="true" data-angle="DEG">DEG</button>
+        <button type="button" role="radio" aria-checked="false" data-angle="RAD">RAD</button>
+        <button type="button" role="radio" aria-checked="false" data-angle="GRA">GRA</button>
+      </div>
+    </header>
+
+    <nav class="modes" id="modes" role="tablist" aria-label="Calculator mode"></nav>
+
+    <main class="layout">
+      <section class="calc" id="calc" role="tabpanel" data-mode="CALC">
+        <div class="display">
+          <div class="status" id="status"></div>
+          <div class="expr" id="exprTex" aria-hidden="true"></div>
+          <label class="sr-only" for="input">Expression</label>
+          <input id="input" class="input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done">
+          <div class="result" id="result" aria-live="polite" aria-atomic="true"></div>
+          <div class="result-extra" id="resultExtra" aria-live="polite"></div>
+        </div>
+        <div id="modeArea"></div>
+        <div id="keypad"></div>
+      </section>
+
+      <aside class="side" aria-label="Tools">
+        <div class="seg side-tabs" role="tablist" aria-label="Tools">
+          <button type="button" role="tab" id="tab-side-history" aria-controls="panel-history" data-tab="history">History</button>
+          <button type="button" role="tab" id="tab-side-memory" aria-controls="panel-memory" data-tab="memory">Variables</button>
+          <button type="button" role="tab" id="tab-side-const" aria-controls="panel-const" data-tab="const">Constants</button>
+          <button type="button" role="tab" id="tab-side-conv" aria-controls="panel-conv" data-tab="conv">Convert</button>
+        </div>
+
+        <section class="panel" id="panel-history" role="tabpanel" aria-labelledby="tab-side-history">
+          <div class="panel-head"><span>Tap an entry to restore it</span><button type="button" class="link" id="historyClear">Clear all</button></div>
+          <p class="empty" id="historyEmpty">Calculations you run will appear here.</p>
+          <ol class="hist" id="historyList"></ol>
+        </section>
+
+        <section class="panel" id="panel-memory" role="tabpanel" aria-labelledby="tab-side-memory" hidden>
+          <div class="mem" id="memList"></div>
+          <p class="hint">Press <b>STO</b> to save the last answer, or type an assignment such as <b>A = 5</b>. Shift + STO clears all variables.</p>
+        </section>
+
+        <section class="panel" id="panel-const" role="tabpanel" aria-labelledby="tab-side-const" hidden>
+          <label class="sr-only" for="constSearch">Search constants</label>
+          <input id="constSearch" class="search" type="search" placeholder="Search constants" autocomplete="off">
+          <ul class="const-list" id="constList"></ul>
+          <p class="hint">CODATA 2018 values. Tap to insert into the expression.</p>
+        </section>
+
+        <section class="panel" id="panel-conv" role="tabpanel" aria-labelledby="tab-side-conv" hidden>
+          <div class="conv">
+            <label class="field"><span>Category</span><select id="convCat"></select></label>
+            <label class="field"><span>Value</span><input id="convVal" value="1" inputmode="decimal" autocomplete="off"></label>
+            <div class="conv-row">
+              <label class="field"><span>From</span><select id="convFrom"></select></label>
+              <button type="button" class="swap" id="convSwap" aria-label="Swap units">⇄</button>
+              <label class="field"><span>To</span><select id="convTo"></select></label>
+            </div>
+            <div class="conv-out" aria-live="polite"><span class="big" id="convBig">—</span><span class="small" id="convSmall"></span></div>
+            <button type="button" class="btn" id="convInsert">Insert result into expression</button>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <p class="foot">Keyboard: type expressions directly, <kbd>Enter</kbd> to evaluate, <kbd>Esc</kbd> to clear.</p>
+  </div>
+
+  <dialog id="varDialog" aria-labelledby="varTitle" aria-describedby="varDesc">
+    <h2 id="varTitle">Store answer</h2>
+    <p id="varDesc"></p>
+    <div class="var-grid" id="varGrid"></div>
+    <div class="dialog-actions"><button type="button" class="btn" id="varCancel">Cancel</button></div>
+  </dialog>
+
+  <script src="./vendor/math.js"></script>
+  <script src="./vendor/katex/katex.min.js"></script>
+  <script src="./engine.js"></script>
+  <script src="./basen.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
